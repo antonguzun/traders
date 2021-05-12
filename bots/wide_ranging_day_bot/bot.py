@@ -14,12 +14,16 @@ class WideRangeDayBot(BaseBot):
     required_days_count = 10
     ptr = None
 
-    def check_initial_data(self):
-        assert len(self.history_candles) >= self.required_days_count, "Недостаточная история"
+    @property
+    def can_make_decision(self) -> bool:
+        """Если недостаточно данных - не можем принять решение"""
+        return len(self.history_candles) >= self.required_days_count
 
     def __call__(self, candle: Candle) -> Decision:
-        self.check_initial_data()
         self.history_candles.append(candle)
+
+        if not self.can_make_decision:
+            return Decision.PASS
 
         find_ptr = PTRFinder(self.params, self.required_days_count, self.history_candles.copy())
         self.ptr = find_ptr(self.ptr)

@@ -3,7 +3,7 @@ from typing import List
 
 from tinvest import Candle
 
-from bots.base_bot import Decision
+from bots.base_bot import Decision, BaseBot
 from bots.wide_ranging_day_bot.bot import WideRangeDayBot
 
 
@@ -12,19 +12,21 @@ def cals_passive_profit(candles: List[Candle]):
 
 
 class OnePaperHistoryBaseTrader:
-    bot = None
+    bot_class = None
     deals_cost = []
     commission_value = Decimal(0.0005)
     papers_count = 0
 
-    def init_bot(self, candles):
-        raise NotImplementedError
+    def init_bot(self) -> BaseBot:
+        return self.bot_class([])
 
     def make_deal(self, paper_cost, papers_to_deal, date):
         if papers_to_deal == 0:
             return
         papers_to_deal = papers_to_deal
-        cost = paper_cost * -1 * papers_to_deal * (1 + self.commission_value)
+        # При покупке положительное кол-во бумаг и положительная цена приводится к
+        # корректной сумме при помощи магической -1
+        cost = paper_cost * papers_to_deal * (1 + self.commission_value) * -1
         self.deals_cost.append(cost)
         print(f"{date}: сделка {papers_to_deal} ({paper_cost}), общая стоимость {round(cost, 2)}")
         self.papers_count += papers_to_deal
@@ -46,7 +48,7 @@ class OnePaperHistoryBaseTrader:
         self.make_deal(candle.c, papers_to_deal, candle.time)
 
     def calc_active_profit(self, candles: List[Candle]):
-        generate_signal, candles = self.init_bot(candles)
+        generate_signal = self.init_bot()
         for candle in candles:
             decision = generate_signal(candle)
             if decision == Decision.BUY:
@@ -59,7 +61,4 @@ class OnePaperHistoryBaseTrader:
 
 
 class OnePaperHistoryWideRangeTrader(OnePaperHistoryBaseTrader):
-    def init_bot(self, candles):
-        init_candles = candles[:10]
-        candles = candles[10:]
-        return WideRangeDayBot(init_candles), candles
+    bot_class = WideRangeDayBot
