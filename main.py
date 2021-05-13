@@ -18,8 +18,8 @@ def run_wide_range(tiket: str):
     print(f"date range: from {_from} to {_to}")
 
     trader = OnePaperHistoryWideRangeTrader()
-    passive_profit = cals_passive_profit(c.payload.candles)
     active_profit = trader.calc_active_profit(c.payload.candles)
+    passive_profit = cals_passive_profit(c.payload.candles)
     active_effect = active_profit - passive_profit
 
     print(f"profit passive {round(passive_profit)}%")
