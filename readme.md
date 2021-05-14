@@ -25,25 +25,37 @@ decision = generate_signal(newest_canlde)  # sell
 
 ### Утилиты тестирования
 #### Для симуляции сделок и расчета доходности страЉтегии бота:
-* `sim.utils.calc_passive_profit` позволяет сгенерировать сделки пассивного инвестирования (используется как референс)
-* `sim.sim_wide_ranging_day_bot.OnePaperHistoryWideRangeTrader` позволяет сгенерировать сделки по сигналам `WideRangeDayBot` 
+* `sim.traders.Buffett` позволяет сгенерировать сделки пассивного инвестирования (используется как референс)
+* `sim.traders.OnePaperHistoryWideRangeTrader` позволяет сгенерировать сделки по сигналам `WideRangeDayBot` 
 * `sim.models.DealsView` позволяет рассчитать доходность сделок
 * `sim.models.Deal` модель сделки, поддерживает `sum()` для суммирования стоимости списка сделок
 
 #### Пример использования трейдеров на основе `OnePaperHistoryBaseTrader`
+
 ```python
-from sim.sim_wide_ranging_day_bot import OnePaperHistoryWideRangeTrader
+from sim import OnePaperHistoryWideRangeTrader
 
 trader = OnePaperHistoryWideRangeTrader(is_short_on=True)
-active_deals = trader.calc_active_profit(history_candles)
+active_deals = trader.create_deals(history_candles)
 print("active deals:")
 [print(deal) for deal in active_deals]
-#>> active deals:
-#>> deal: sell 1 paper(s) by 26.47,  total_cost: 26.48$)
-#>> deal: buy  1 paper(s) by 19.61,  total_cost: -19.62$)
+# >> active deals:
+# >> deal: sell 1 paper(s) by 26.47,  total_cost: 26.48$
+# >> deal: buy  1 paper(s) by 19.61,  total_cost: -19.62$
 ```
 вызов объекта возвращает список сделок `List[Deal]`
 
+#### Трейдер референс - `Baffett`
+```python
+from sim import Baffet
+
+passive_deals = Baffet().create_deals(history_candles)
+print("passive deals:")
+[print(deal) for deal in passive_deals]
+# >> passive deals:
+# >> deal: buy  1 paper(s) by 16.47,  total_cost: -16.48$
+# >> deal: sell 1 paper(s) by 19.61,  total_cost: 19.62$
+```
 #### Пример расчета доходности сделок
 ```python
 from sim.models import DealsView

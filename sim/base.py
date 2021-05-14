@@ -46,7 +46,7 @@ class OnePaperHistoryBaseTrader:
         papers_to_deal = papers_to_deal_mapping[self.papers_count]
         self.make_deal(candle, papers_to_deal)
 
-    def calc_active_profit(self, candles: List[Candle]) -> List[Deal]:
+    def create_deals(self, candles: List[Candle]) -> List[Deal]:
         self.deals = []
         generate_signal = self.init_bot()
         for candle in candles:
