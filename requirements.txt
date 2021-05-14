@@ -1,2 +1,3 @@
 tinvest==3.0.3
 python-dotenv==0.17.1
+pytest
