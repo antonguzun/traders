@@ -21,7 +21,7 @@ def run_wide_range(ticker: str):
     trader = OnePaperHistoryWideRangeTrader(is_short_on=True)
     active_deals = trader.calc_active_profit(c.payload.candles)
     passive_deals = calc_passive_profit(c.payload.candles)
-
+    [print(deal) for deal in active_deals]
     active_deals_view = DealsView(active_deals, c.payload.candles[0].c)
     passive_deals_view = DealsView(passive_deals, c.payload.candles[0].c)
 
