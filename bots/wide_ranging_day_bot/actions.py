@@ -6,7 +6,7 @@ from tinvest import Candle
 from bots.wide_ranging_day_bot.models import PTR, StrategyParams
 
 
-class LastDayIsWideRange:
+class WideRangeDayGetter:
     def __init__(self, params: StrategyParams, candles: List[Candle]):
         self.params = params
         self.candles = candles
@@ -27,8 +27,19 @@ class LastDayIsWideRange:
     def volatility_ratio(self) -> Decimal:
         return self.last_day_interval / self.average_day_interval_for_required_days
 
-    def __call__(self) -> bool:
+    @property
+    def is_wide_range(self) -> bool:
         return self.volatility_ratio > self.params.k
+
+    def __call__(self) -> Optional[Candle]:
+        """Возвращает день с самым широким диапазоном из последних 1 + self.params.n1 дней """
+        widest_candle = None
+        his_range = None
+        for _ in range(self.params.n1 + 1):
+            if self.is_wide_range and (not his_range or (his_range and self.volatility_ratio > his_range)):
+                his_range = self.volatility_ratio
+                widest_candle = self.candles.pop()
+        return widest_candle
 
 
 class PTRFinder:
@@ -59,9 +70,9 @@ class PTRFinder:
     def _fresh_ptr(self) -> Optional[PTR]:
         """Если день является широкодиапазонным то возвращаем PTR на основе этого дня"""
         candles = self._candles
-        check_day_is_wide_range = LastDayIsWideRange(self.params, candles)
-        if check_day_is_wide_range():
-            return PTR.create_by_candle(self._last_candle)
+        day_with_wide_range = WideRangeDayGetter(self.params, candles.copy())()
+        if day_with_wide_range:
+            return PTR.create_by_candle(day_with_wide_range)
         return None
 
     def __call__(self, previous_ptr: Optional[PTR]) -> Optional[PTR]:
