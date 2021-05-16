@@ -10,7 +10,7 @@ class WideRangeDayBot(BaseBot):
     Основан на работе с сущностью PTR и принципе широкодиапазонного дня
     После инициализации можно вызывать метод __сall__ и получать решение по новому торговому дню
     """
-    params = StrategyParams()
+    params: StrategyParams
     required_days_count = 10
     ptr = None
 

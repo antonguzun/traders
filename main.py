@@ -2,6 +2,7 @@ import datetime
 
 from tinvest import SyncClient, CandleResolution
 
+from bots.wide_ranging_day_bot.models import StrategyParams
 from sim import Baffett, OnePaperHistoryWideRangeTrader
 from sim.models import DealsView
 from app.settings import TINKOFF_SANDBOX_TOKEN
@@ -17,11 +18,11 @@ def run_wide_range(ticker: str):
 
     print(f"TICKER {ticker}")
     print(f"date range: from {candles[0].time.date()} to {candles[-1].time.date()}")
-    trader = OnePaperHistoryWideRangeTrader(is_short_on=True)
+    trader = OnePaperHistoryWideRangeTrader(StrategyParams(0, 1.7), is_short_on=True)
     active_deals = trader.create_deals(candles)
     passive_deals = Baffett().create_deals(candles)
     print("active deals:")
-    [print(deal) for deal in passive_deals]
+    [print(deal) for deal in active_deals]
 
     active_deals_view = DealsView(active_deals, candles[0].c)
     passive_deals_view = DealsView(passive_deals, candles[0].c)

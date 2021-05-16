@@ -9,14 +9,16 @@ from sim.models import Deal
 
 class OnePaperHistoryBaseTrader:
     bot_class = None
+    params = None
     deals: List[Deal] = None
     commission_value = COMMISSION_VALUE
 
-    def __init__(self, is_short_on=False):
+    def __init__(self, params=None, is_short_on=False, *args, **kwargs):
         self.is_short_on = is_short_on
+        self.params = params
 
     def init_bot(self) -> BaseBot:
-        return self.bot_class([])
+        return self.bot_class(self.params, [])
 
     @property
     def papers_count(self) -> int:

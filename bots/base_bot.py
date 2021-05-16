@@ -17,7 +17,8 @@ class BaseBot(ABC):
     При запуске метода __call__ передаем текущий candle, который в себе содержит цену акции и дату
     этот candle добавляется к историческим данным, и принимает решение "покупать/продавать" для последней даты
     """
-    def __init__(self, history_candles: List[Candle]):
+    def __init__(self, params, history_candles: List[Candle]):
+        self.params = params
         self.history_candles = history_candles
 
     def __call__(self, candle: Candle) -> Decision:

@@ -3,6 +3,7 @@ from typing import List
 from tinvest import Candle
 
 from bots.wide_ranging_day_bot.bot import WideRangeDayBot
+from bots.wide_ranging_day_bot.models import StrategyParams
 from sim.models import Deal
 from sim.base import OnePaperHistoryBaseTrader
 
@@ -17,3 +18,4 @@ class Baffett:
 
 class OnePaperHistoryWideRangeTrader(OnePaperHistoryBaseTrader):
     bot_class = WideRangeDayBot
+    params: StrategyParams

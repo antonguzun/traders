@@ -4,14 +4,20 @@ from decimal import Decimal
 from tinvest import Candle
 
 
+@dataclass
 class StrategyParams:
-    n1 = 0
-    n2 = 0
-    k = 1.7
+    """
+    n1 - кол-во дней перед днем с широким диапазоном, включенных в период PTR
+    k - коэффициент волатильности - значение, которое должен превысить volatily ratio,
+    чтобы определить день с широким диапазоном
+    """
+    n1: int
+    k: float
 
 
 @dataclass
 class PTR:
+    """Price trigger range"""
     h: Decimal
     l: Decimal
 
