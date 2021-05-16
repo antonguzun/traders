@@ -14,7 +14,7 @@ class StrategyParams:
     """
     n1 = 0
     n2 = 0
-    k = 1.0
+    k = 1.7
 
 
 @dataclass

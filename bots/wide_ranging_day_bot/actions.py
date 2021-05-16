@@ -13,11 +13,13 @@ class LastDayIsWideRange:
 
     @property
     def average_day_interval_for_required_days(self) -> Decimal:
-        last_interval = [abs(candle.h - candle.l) for candle in self.candles]
+        """интервал основывается на истинных(!) максимумах и минимумах"""
+        last_interval = [abs(candle.o - candle.c) for candle in self.candles]
         return sum(last_interval) / len(self.candles)
 
     @property
     def last_day_interval(self) -> Decimal:
+        """интервал основывается на истинных(!) максимумах и минимумах"""
         candle = self.candles[-1]
         return abs(candle.o - candle.c)
 
