@@ -32,10 +32,15 @@ class WideRangeDayGetter:
         return self.volatility_ratio > self.params.k
 
     def __call__(self) -> Optional[Candle]:
-        """Возвращает день с самым широким диапазоном из последних 1 + self.params.n1 дней """
+        """Возвращает день с самым широким диапазоном из последних 1 + self.params.n1 дней
+        при n1 = 0 эквивалентно
+        if self.is_wide_range:
+           return self.candles[-1]
+        """
         widest_candle = None
         his_range = None
-        for _ in range(self.params.n1 + 1):
+
+        for _ in range(self.params.n1):
             if self.is_wide_range and (not his_range or (his_range and self.volatility_ratio > his_range)):
                 his_range = self.volatility_ratio
                 widest_candle = self.candles.pop()
