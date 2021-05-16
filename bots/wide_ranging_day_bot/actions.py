@@ -19,7 +19,7 @@ class LastDayIsWideRange:
     @property
     def last_day_interval(self) -> Decimal:
         candle = self.candles[-1]
-        return abs(candle.h - candle.l)
+        return abs(candle.o - candle.c)
 
     @property
     def volatility_ratio(self) -> Decimal:
@@ -36,12 +36,12 @@ class PTRFinder:
         self.history_candles = history_candles
 
     @property
-    def _candles(self):
+    def _candles(self) -> List[Candle]:
         """Возвращаем последний чанк дней длинной required_days_count"""
         return self.history_candles[-self.required_days_count:]
 
     @property
-    def _last_candle(self):
+    def _last_candle(self) -> Candle:
         return self.history_candles[-1]
 
     def _dig_ptr_from_history(self) -> Optional[PTR]:
@@ -54,7 +54,7 @@ class PTRFinder:
         return None
 
     @property
-    def _fresh_ptr(self):
+    def _fresh_ptr(self) -> Optional[PTR]:
         """Если день является широкодиапазонным то возвращаем PTR на основе этого дня"""
         candles = self._candles
         check_day_is_wide_range = LastDayIsWideRange(self.params, candles)

@@ -21,7 +21,7 @@ def run_wide_range(ticker: str):
     active_deals = trader.create_deals(candles)
     passive_deals = Baffett().create_deals(candles)
     print("active deals:")
-    [print(deal) for deal in passive_deals]
+    [print(deal) for deal in active_deals]
 
     active_deals_view = DealsView(active_deals, candles[0].c)
     passive_deals_view = DealsView(passive_deals, candles[0].c)
