@@ -1,11 +1,10 @@
 from typing import List
 
 from app.common.models.candle import Candle
-
 from bots.wide_ranging_day_bot.bot import WideRangeDayBot
 from bots.wide_ranging_day_bot.models import StrategyParams
-from sim.models import Deal
 from sim.base import OnePaperHistoryBaseTrader
+from sim.models import Deal
 
 
 class Baffett:

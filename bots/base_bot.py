@@ -12,11 +12,12 @@ class Decision(Enum):
 
 
 class BaseBot(ABC):
-    """ Базовый интерфейс бота
+    """Базовый интерфейс бота
     При инициализации бота мы загоняем в него имеющиеся исторические данные
     При запуске метода __call__ передаем текущий candle, который в себе содержит цену акции и дату
     этот candle добавляется к историческим данным, и принимает решение "покупать/продавать" для последней даты
     """
+
     def __init__(self, params, history_candles: List[Candle]):
         self.params = params
         self.history_candles = history_candles

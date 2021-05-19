@@ -1,5 +1,4 @@
 from app.common.models.candle import Candle
-
 from bots.base_bot import BaseBot, Decision
 from bots.wide_ranging_day_bot.actions import PTRFinder
 from bots.wide_ranging_day_bot.models import StrategyParams
@@ -10,6 +9,7 @@ class WideRangeDayBot(BaseBot):
     Основан на работе с сущностью PTR и принципе широкодиапазонного дня
     После инициализации можно вызывать метод __сall__ и получать решение по новому торговому дню
     """
+
     params: StrategyParams
     required_days_count = 10
     ptr = None
@@ -25,7 +25,9 @@ class WideRangeDayBot(BaseBot):
         if not self.can_make_decision:
             return Decision.PASS
 
-        find_ptr = PTRFinder(self.params, self.required_days_count, self.history_candles.copy())
+        find_ptr = PTRFinder(
+            self.params, self.required_days_count, self.history_candles.copy()
+        )
         self.ptr = find_ptr(self.ptr)
 
         if self.ptr:

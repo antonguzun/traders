@@ -18,8 +18,10 @@ class Deal:
             action = "buy "
         else:
             action = "sell"
-        return f"deal: {action} {abs(self.paper_count)} paper(s) by {self.price}, " \
-               f" total_cost: {round(self.total_deal_cost, 2)}$"
+        return (
+            f"deal: {action} {abs(self.paper_count)} paper(s) by {self.price}, "
+            f" total_cost: {round(self.total_deal_cost, 2)}$"
+        )
 
     @property
     def total_deal_cost(self) -> Decimal:
@@ -38,9 +40,11 @@ class DealsView:
 
     def __str__(self):
         if self.deals:
-            return f"\tTotal result: \t{self.total_result}$, " \
-                   f"\t{self.total_result_in_proc}%, " \
-                   f"\tdeals count: {len(self.deals)}"
+            return (
+                f"\tTotal result: \t{self.total_result}$, "
+                f"\t{self.total_result_in_proc}%, "
+                f"\tdeals count: {len(self.deals)}"
+            )
         return "No deals"
 
     @property

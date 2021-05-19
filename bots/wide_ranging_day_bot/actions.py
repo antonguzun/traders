@@ -1,8 +1,7 @@
 from decimal import Decimal
-from typing import Optional, List
+from typing import List, Optional
 
 from app.common.models.candle import Candle
-
 from bots.wide_ranging_day_bot.models import PTR, StrategyParams
 
 
@@ -41,14 +40,21 @@ class WideRangeDayGetter:
         his_range = None
 
         for _ in range(self.params.n1):
-            if self.is_wide_range and (not his_range or (his_range and self.volatility_ratio > his_range)):
+            if self.is_wide_range and (
+                not his_range or (his_range and self.volatility_ratio > his_range)
+            ):
                 his_range = self.volatility_ratio
                 widest_candle = self.candles.pop()
         return widest_candle
 
 
 class PTRFinder:
-    def __init__(self, params: StrategyParams, required_days_count: int, history_candles: List[Candle]):
+    def __init__(
+        self,
+        params: StrategyParams,
+        required_days_count: int,
+        history_candles: List[Candle],
+    ):
         self.params = params
         self.required_days_count = required_days_count
         self.history_candles = history_candles
@@ -56,7 +62,7 @@ class PTRFinder:
     @property
     def _candles(self) -> List[Candle]:
         """Возвращаем последний чанк дней длинной required_days_count"""
-        return self.history_candles[-self.required_days_count:]
+        return self.history_candles[-self.required_days_count :]
 
     @property
     def _last_candle(self) -> Candle:

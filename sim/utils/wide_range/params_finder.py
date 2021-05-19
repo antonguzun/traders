@@ -22,7 +22,14 @@ def find_params(candles) -> StrategyParams:
     return best_params
 
 
-def save_params(ticker: str, params: StrategyParams, profit_proc, profit_effect, from_dt: datetime, to_dt: datetime):
+def save_params(
+    ticker: str,
+    params: StrategyParams,
+    profit_proc,
+    profit_effect,
+    from_dt: datetime,
+    to_dt: datetime,
+):
     from app.settings import DATA_DIR
 
     filepath = DATA_DIR / "wide_range" / f"{from_dt.date()}_to_{to_dt.date()}.csv"
@@ -32,20 +39,25 @@ def save_params(ticker: str, params: StrategyParams, profit_proc, profit_effect,
 
 
 def run_for_tickers():
-    from sim.constants import TICKERS
+    from tinvest import CandleResolution, SyncClient
+
     from app.settings import TINKOFF_SANDBOX_TOKEN
-    from tinvest import CandleResolution
     from sim import Baffett
+    from sim.constants import TICKERS
     from sim.models import DealsView
-    from tinvest import SyncClient
+
     for ticker in TICKERS:
         client = SyncClient(TINKOFF_SANDBOX_TOKEN, use_sandbox=True)
-        instrument_figi = client.get_market_search_by_ticker(ticker).payload.instruments[0].figi
+        instrument_figi = (
+            client.get_market_search_by_ticker(ticker).payload.instruments[0].figi
+        )
 
         res = CandleResolution.day
         _from = datetime(year=2020, month=5, day=10)
         _to = datetime(year=2021, month=5, day=10)
-        candles = client.get_market_candles(instrument_figi, _from, _to, res).payload.candles
+        candles = client.get_market_candles(
+            instrument_figi, _from, _to, res
+        ).payload.candles
 
         params = find_params(candles.copy())
         trader = OnePaperHistoryWideRangeTrader(params, is_short_on=True)
@@ -54,9 +66,15 @@ def run_for_tickers():
 
         active_deals_view = DealsView(active_deals, candles[0].c)
         passive_deals_view = DealsView(passive_deals, candles[0].c)
-        effect = round(active_deals_view.total_result_in_proc - passive_deals_view.total_result_in_proc, 2)
+        effect = round(
+            active_deals_view.total_result_in_proc
+            - passive_deals_view.total_result_in_proc,
+            2,
+        )
         print(f"{ticker}: n1: {params.n1}, k: {params.k}, effect: {effect}")
-        save_params(ticker, params, active_deals_view.total_result_in_proc, effect, _from, _to)
+        save_params(
+            ticker, params, active_deals_view.total_result_in_proc, effect, _from, _to
+        )
 
 
 if __name__ == "__main__":

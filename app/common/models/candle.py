@@ -14,4 +14,6 @@ class Candle:
 
     @classmethod
     def create_by_tinkoff_candle(cls, t_candle) -> "Candle":
-        return cls(t_candle.figi, t_candle.o, t_candle.c, t_candle.h, t_candle.l, t_candle.time)
+        return cls(
+            t_candle.figi, t_candle.o, t_candle.c, t_candle.h, t_candle.l, t_candle.time
+        )

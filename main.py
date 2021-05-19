@@ -1,10 +1,10 @@
 from datetime import datetime
 
 from app.clients.tinkoff import TIClient
+from app.settings import TINKOFF_SANDBOX_TOKEN
 from bots.wide_ranging_day_bot.models import StrategyParams
 from sim import Baffett, OnePaperHistoryWideRangeTrader
 from sim.models import DealsView
-from app.settings import TINKOFF_SANDBOX_TOKEN
 
 
 def run_wide_range(ticker: str, _from: datetime, _to: datetime):
@@ -23,12 +23,18 @@ def run_wide_range(ticker: str, _from: datetime, _to: datetime):
     passive_deals_view = DealsView(passive_deals, candles[0].close)
     print(f"profit active {active_deals_view}")
     print(f"profit passive {passive_deals_view}")
-    effect = round(active_deals_view.total_result_in_proc - passive_deals_view.total_result_in_proc, 2)
+    effect = round(
+        active_deals_view.total_result_in_proc
+        - passive_deals_view.total_result_in_proc,
+        2,
+    )
     print(f"profit effect {effect}%")
 
 
 if __name__ == "__main__":
-    tickers = ["SPCE",]
+    tickers = [
+        "SPCE",
+    ]
     _from = datetime(year=2020, month=5, day=10)
     _to = datetime(year=2021, month=5, day=10)
 

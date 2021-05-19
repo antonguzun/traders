@@ -11,6 +11,7 @@ class StrategyParams:
     k - коэффициент волатильности - значение, которое должен превысить volatily ratio,
     чтобы определить день с широким диапазоном
     """
+
     n1: int
     k: float
 
@@ -18,6 +19,7 @@ class StrategyParams:
 @dataclass
 class PTR:
     """Price trigger range"""
+
     h: Decimal
     l: Decimal
 
