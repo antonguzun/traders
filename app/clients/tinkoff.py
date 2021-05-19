@@ -3,11 +3,14 @@ from typing import List
 
 from tinvest import CandleResolution, SyncClient
 
+from app.clients.base import BaseClient
 from app.common.models.candle import Candle
 
 
-class TIClient(SyncClient):
-    def get_candles(self, ticker: str, _from: datetime, _to: datetime) -> List[Candle]:
+class TIClient(BaseClient, SyncClient):
+    def get_candles_by_ticker(
+        self, ticker: str, _from: datetime, _to: datetime
+    ) -> List[Candle]:
         instrument_figi = (
             self.get_market_search_by_ticker(ticker).payload.instruments[0].figi
         )

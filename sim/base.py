@@ -1,3 +1,4 @@
+from abc import ABC
 from typing import List
 
 from app.common.models.candle import Candle
@@ -6,7 +7,12 @@ from sim.constants import COMMISSION_VALUE
 from sim.models import Deal
 
 
-class OnePaperHistoryBaseTrader:
+class BaseTrader(ABC):
+    def create_deals(self, candles: List[Candle]) -> List[Deal]:
+        raise NotImplementedError
+
+
+class OnePaperHistoryBaseTrader(BaseTrader):
     bot_class = None
     params = None
     deals: List[Deal] = None
@@ -29,6 +35,7 @@ class OnePaperHistoryBaseTrader:
         deal = Deal(candle.name, candle.close, papers_to_deal, candle.time)
         self.deals.append(deal)
 
+    # !TODO надо бы переписать эти методы
     def buy(self, candle: Candle):
         papers_to_deal_mapping = {0: 1, 1: 0, -1: 2}
         papers_to_deal = papers_to_deal_mapping[self.papers_count]
@@ -38,11 +45,7 @@ class OnePaperHistoryBaseTrader:
         if self.is_short_on:
             papers_to_deal_mapping = {0: -1, 1: -2, -1: 0}
         else:
-            papers_to_deal_mapping = {
-                0: 0,
-                1: -1,
-                -1: 1,
-            }  # !TODO надо бы переписать эти методы
+            papers_to_deal_mapping = {0: 0, 1: -1, -1: 1}
         papers_to_deal = papers_to_deal_mapping[self.papers_count]
         self.make_deal(candle, papers_to_deal)
 
