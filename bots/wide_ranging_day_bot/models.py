@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from decimal import Decimal
 
-from tinvest import Candle
+from app.common.models.candle import Candle
 
 
 @dataclass
@@ -23,4 +23,4 @@ class PTR:
 
     @classmethod
     def create_by_candle(cls, candle: Candle) -> "PTR":
-        return cls(candle.h, candle.l)
+        return cls(candle.high, candle.low)

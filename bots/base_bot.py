@@ -2,7 +2,7 @@ from abc import ABC
 from enum import Enum
 from typing import List
 
-from tinvest import Candle
+from app.common.models.candle import Candle
 
 
 class Decision(Enum):

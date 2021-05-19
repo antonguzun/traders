@@ -1,4 +1,4 @@
-from tinvest import Candle
+from app.common.models.candle import Candle
 
 from bots.base_bot import BaseBot, Decision
 from bots.wide_ranging_day_bot.actions import PTRFinder
@@ -29,8 +29,8 @@ class WideRangeDayBot(BaseBot):
         self.ptr = find_ptr(self.ptr)
 
         if self.ptr:
-            if candle.c > self.ptr.h:
+            if candle.close > self.ptr.h:
                 return Decision.BUY
-            elif candle.c < self.ptr.l:
+            elif candle.close < self.ptr.l:
                 return Decision.SELL
         return Decision.PASS

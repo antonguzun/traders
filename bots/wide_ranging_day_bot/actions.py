@@ -1,7 +1,7 @@
 from decimal import Decimal
 from typing import Optional, List
 
-from tinvest import Candle
+from app.common.models.candle import Candle
 
 from bots.wide_ranging_day_bot.models import PTR, StrategyParams
 
@@ -14,14 +14,14 @@ class WideRangeDayGetter:
     @property
     def average_day_interval_for_required_days(self) -> Decimal:
         """интервал основывается на истинных(!) максимумах и минимумах"""
-        last_interval = [abs(candle.o - candle.c) for candle in self.candles]
+        last_interval = [abs(candle.open - candle.close) for candle in self.candles]
         return sum(last_interval) / len(self.candles)
 
     @property
     def last_day_interval(self) -> Decimal:
         """интервал основывается на истинных(!) максимумах и минимумах"""
         candle = self.candles[-1]
-        return abs(candle.o - candle.c)
+        return abs(candle.open - candle.close)
 
     @property
     def volatility_ratio(self) -> Decimal:

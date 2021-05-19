@@ -1,6 +1,6 @@
 from typing import List
 
-from tinvest import Candle
+from app.common.models.candle import Candle
 
 from bots.base_bot import BaseBot, Decision
 from sim.constants import COMMISSION_VALUE
@@ -27,7 +27,7 @@ class OnePaperHistoryBaseTrader:
     def make_deal(self, candle: Candle, papers_to_deal: int):
         if papers_to_deal == 0:
             return
-        deal = Deal(candle.figi, candle.c, papers_to_deal, candle.time)
+        deal = Deal(candle.name, candle.close, papers_to_deal, candle.time)
         self.deals.append(deal)
 
     def buy(self, candle: Candle):
