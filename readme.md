@@ -38,8 +38,7 @@ from sim import OnePaperHistoryWideRangeTrader
 
 trader = OnePaperHistoryWideRangeTrader(is_short_on=True)
 active_deals = trader.create_deals(history_candles)
-print("active deals:")
-[print(deal) for deal in active_deals]
+print("active deals:", *active_deals, sep="\n")
 # >> active deals:
 # >> deal: sell 1 paper(s) by 26.47,  total_cost: 26.48$
 # >> deal: buy  1 paper(s) by 19.61,  total_cost: -19.62$
@@ -51,8 +50,7 @@ print("active deals:")
 from sim import Baffet
 
 passive_deals = Baffet().create_deals(history_candles)
-print("passive deals:")
-[print(deal) for deal in passive_deals]
+print("passive deals:", *passive_deals, sep="\n")
 # >> passive deals:
 # >> deal: buy  1 paper(s) by 16.47,  total_cost: -16.48$
 # >> deal: sell 1 paper(s) by 19.61,  total_cost: 19.62$

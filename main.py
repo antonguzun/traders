@@ -16,8 +16,7 @@ def run_wide_range(ticker: str, _from: datetime, _to: datetime):
     trader = OnePaperHistoryWideRangeTrader(StrategyParams(1, 2.3), is_short_on=True)
     active_deals = trader.create_deals(candles)
     passive_deals = Baffett().create_deals(candles)
-    print("active deals:")
-    [print(deal) for deal in active_deals]
+    print("active deals:", *active_deals, sep="\n")
 
     active_deals_view = DealsView(active_deals, candles[0].close)
     passive_deals_view = DealsView(passive_deals, candles[0].close)
