@@ -1,22 +1,16 @@
-import datetime
+from datetime import datetime
 
-from tinvest import SyncClient, CandleResolution
-
+from app.clients.tinkoff import TIClient
 from bots.wide_ranging_day_bot.models import StrategyParams
 from sim import Baffett, OnePaperHistoryWideRangeTrader
 from sim.models import DealsView
 from app.settings import TINKOFF_SANDBOX_TOKEN
-from app.common.models.candle import Candle
 
 
-def run_wide_range(ticker: str):
-    client = SyncClient(TINKOFF_SANDBOX_TOKEN, use_sandbox=True)
-    instrument_figi = client.get_market_search_by_ticker(ticker).payload.instruments[0].figi
-    res = CandleResolution.day
-    _from = datetime.datetime(year=2020, month=5, day=10)
-    _to = datetime.datetime(year=2021, month=5, day=10)
-    tinkoff_candles = client.get_market_candles(instrument_figi, _from, _to, res).payload.candles
-    candles = [Candle.create_by_tinkoff_candle(t_candle) for t_candle in tinkoff_candles]
+def run_wide_range(ticker: str, _from: datetime, _to: datetime):
+    client = TIClient(TINKOFF_SANDBOX_TOKEN, use_sandbox=True)
+    candles = client.get_candles(ticker, _from, _to)
+
     print(f"TICKER {ticker}")
     print(f"date range: from {candles[0].time.date()} to {candles[-1].time.date()}")
     trader = OnePaperHistoryWideRangeTrader(StrategyParams(1, 2.3), is_short_on=True)
@@ -35,6 +29,9 @@ def run_wide_range(ticker: str):
 
 if __name__ == "__main__":
     tickers = ["SPCE",]
+    _from = datetime(year=2020, month=5, day=10)
+    _to = datetime(year=2021, month=5, day=10)
+
     for ticker in tickers:
-        run_wide_range(ticker)
+        run_wide_range(ticker, _from, _to)
         print("________________________")
