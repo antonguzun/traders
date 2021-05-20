@@ -2,13 +2,15 @@ from datetime import datetime
 
 from app.clients.tinkoff import TIClient
 from app.settings import TINKOFF_SANDBOX_TOKEN
-from bots.run_day_breakout_bot.models import DayBreakoutParams
+from bots.run_day_breakout_bot.models import RunDayBreakoutParams
 from sim.traders import OnePaperHistoryRunDayBreakoutTrader
 from sim.utils.printers import TradingPrinter
 
 if __name__ == "__main__":
     client = TIClient(TINKOFF_SANDBOX_TOKEN, use_sandbox=True)
-    trader = OnePaperHistoryRunDayBreakoutTrader(DayBreakoutParams(3, 3), is_short_on=True)
+    trader = OnePaperHistoryRunDayBreakoutTrader(
+        RunDayBreakoutParams(3, 3), is_short_on=True
+    )
     printer = TradingPrinter(client, trader)
 
     printer.print_history_trading(
