@@ -8,6 +8,7 @@
 
 * `bots.wide_ranging_day_bot.bot.WideRangeDayBot` бот основан на принципе широкодиапазонного дня. [Результаты](https://docs.google.com/spreadsheets/d/1-e9Jza_OrOK2vfOx9dtoKknFYvd9ENLH2cQnN9enzrM/edit?usp=sharing)
 ("Технический анализ. Полный курс" - Швагер Джек Д., стр. 651)
+* `bots.run_day_breakout_bot.bot.RunDayBreakoutBot` бот основан на идее пробоя "дней с ускорением" ("Технический анализ. Полный курс" - Швагер Джек Д., стр. 661)
 
 #### Пример использования бота
 ```python
@@ -25,12 +26,15 @@ decision = generate_signal(newest_canlde)  # sell
 `decision` определяет видение тренда сигнального бота 
 
 ### Утилиты тестирования
-#### Для симуляции сделок и расчета доходности страЉтегии бота:
+#### "Трейдеры"
+Классы для симуляции сделок на исторических данных по сигналам ботов
 * `sim.traders.Buffett` позволяет сгенерировать сделки пассивного инвестирования (используется как референс)
-* `sim.traders.OnePaperHistoryWideRangeTrader` позволяет сгенерировать сделки по сигналам `WideRangeDayBot` 
+* `sim.traders.OnePaperHistoryWideRangeTrader` генерит сделки по сигналам `WideRangeDayBot` 
+* `sim.traders.OnePaperHistoryRunDayBreakoutTrader` генерит сделки по сигналам `RunDayBreakoutBot`
+#### Для симуляции сделок и расчета доходности стратегии бота:
 * `sim.models.DealsView` позволяет рассчитать доходность сделок
 * `sim.models.Deal` модель сделки, поддерживает `sum()` для суммирования стоимости списка сделок
-
+* `sim.utils.printers.TradingPrinter` вычисляет разницу двух разных трейдеров по одному набору данных, выводит результат в консоль
 #### Пример использования трейдеров на основе `OnePaperHistoryBaseTrader`
 
 ```python
