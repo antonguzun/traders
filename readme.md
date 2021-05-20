@@ -1,16 +1,22 @@
 # traders
 Проект предназначен для удобного тестирования стратегий торговых ботов
-Данные берем из апишки ТИ
 
-## Структура
-### Боты (Генераторы сигналов)
-В папке `bots` каждый бот подчиняется базовому интерфейсу, что позволяет удобно тестировать разные стратегии
+1. [Боты](#Боты)
+2. [Утилиты тестирования](#example2)
+3. [Клиенты](#third-example)
+4. [Установка](#clients)
+
+***
+## Боты
+Они же генераторы сигналов к сделкам.
+
+В папке `bots` каждый бот подчиняется базовому интерфейсу.
 
 * `bots.wide_ranging_day_bot.bot.WideRangeDayBot` бот основан на принципе широкодиапазонного дня. [Результаты](https://docs.google.com/spreadsheets/d/1-e9Jza_OrOK2vfOx9dtoKknFYvd9ENLH2cQnN9enzrM/edit?usp=sharing)
 ("Технический анализ. Полный курс" - Швагер Джек Д., стр. 651)
 * `bots.run_day_breakout_bot.bot.RunDayBreakoutBot` бот основан на идее пробоя "дней с ускорением" ("Технический анализ. Полный курс" - Швагер Джек Д., стр. 661)
 
-#### Пример использования бота
+### Пример использования бота
 ```python
 from bots.wide_ranging_day_bot.bot import WideRangeDayBot
 
@@ -25,18 +31,20 @@ decision = generate_signal(newest_canlde)  # sell
 
 `decision` определяет видение тренда сигнального бота 
 
-### Утилиты тестирования
-#### "Трейдеры"
+***
+
+## Утилиты тестирования
+### "Трейдеры"
 Классы для симуляции сделок на исторических данных по сигналам ботов
 * `sim.traders.Buffett` позволяет сгенерировать сделки пассивного инвестирования (используется как референс)
 * `sim.traders.OnePaperHistoryWideRangeTrader` генерит сделки по сигналам `WideRangeDayBot` 
 * `sim.traders.OnePaperHistoryRunDayBreakoutTrader` генерит сделки по сигналам `RunDayBreakoutBot`
-#### Для симуляции сделок и расчета доходности стратегии бота:
-* `sim.models.DealsView` позволяет рассчитать доходность сделок
+### Для симуляции сделок и расчета доходности стратегии бота:
 * `sim.models.Deal` модель сделки, поддерживает `sum()` для суммирования стоимости списка сделок
+* `sim.models.DealsView` позволяет рассчитать доходность сделок
 * `sim.utils.printers.TradingPrinter` вычисляет разницу двух разных трейдеров по одному набору данных, выводит результат в консоль
-#### Пример использования трейдеров на основе `OnePaperHistoryBaseTrader`
 
+### Пример использования трейдеров на основе `BaseTrader`
 ```python
 from sim import OnePaperHistoryWideRangeTrader
 
@@ -49,7 +57,7 @@ print("active deals:", *active_deals, sep="\n")
 ```
 вызов объекта возвращает список сделок `List[Deal]`
 
-#### Трейдер референс - `Baffett`
+### Трейдер референс - `Baffett`
 ```python
 from sim import Baffet
 
@@ -59,7 +67,7 @@ print("passive deals:", *passive_deals, sep="\n")
 # >> deal: buy  1 paper(s) by 16.47,  total_cost: -16.48$
 # >> deal: sell 1 paper(s) by 19.61,  total_cost: 19.62$
 ```
-#### Пример расчета доходности сделок
+### Пример расчета доходности сделок
 ```python
 from sim.models import DealsView
 
@@ -70,7 +78,17 @@ active_deals_view = DealsView(active_deals, fist_candle)
 print(f"profit active {active_deals_view}")
 #>> profit active Total result: 6.86$, 41.65%, deals count: 2
 ```
+***
 
+## Клиенты
+Все модули проекта завязаны на сущность `app.common.models.candle.Candle`, для отвязки от типа данных конкретного источника.
+
+Сущность `Candle` содержит в себе класс-методы для создания объекта на основе данных из другого клиента.
+
+Все клиенты должны поддерживать базовый интерфейс и выдавать данные в базовых моделях.
+* `app.clients.tinkoff.TIClient` класс клиента апи тинькова
+
+***
 ## Установка
 Устанавливаем python 3.8
 
