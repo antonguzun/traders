@@ -1,7 +1,7 @@
 from decimal import Decimal
 from typing import List, Optional
 
-from app.common.actions.calculations import truth_max_of_candles
+from app.common.actions.calculations import truth_max_of_candles, truth_min_of_candles
 from app.common.models.candle import Candle
 from bots.base_bot import BaseBot, Decision
 from bots.run_day_breakout_bot.models import Direction, RunDay, RunDayBreakoutParams
@@ -21,13 +21,20 @@ class RunDayBreakoutBot(BaseBot):
 
     params: RunDayBreakoutParams
 
-    @staticmethod
-    def gen_new_run_day(candles: List[Candle]) -> Optional[RunDay]:
-        truth_max = max(candles[0].high, candles[-1].close)
-        truth_min = min(candles[0].low, candles[-1].close)
-        if truth_max > truth_max_of_candles(candles[:-1]):
+    def gen_new_run_day(self, candles: List[Candle]) -> Optional[RunDay]:
+        prev_candles = candles[: self.params.n1]
+        prev_candle = candles[self.params.n1 - 1]
+        current_candle = candles[self.params.n1]
+        post_candles = candles[self.params.n1 + 1 :]
+        truth_max = max(current_candle.high, prev_candle.close)
+        truth_min = min(current_candle.low, prev_candle.close)
+        if truth_max > truth_max_of_candles(
+            prev_candles
+        ) and truth_min < truth_min_of_candles(post_candles):
             direction = Direction.HIGH
-        elif truth_max < truth_max_of_candles(candles[:-1]):
+        elif truth_min < truth_min_of_candles(
+            prev_candles
+        ) and truth_max > truth_max_of_candles(post_candles):
             direction = Direction.LOW
         else:
             return None
@@ -37,8 +44,10 @@ class RunDayBreakoutBot(BaseBot):
     def run_days(self) -> List[RunDay]:
         candles = self.history_candles.copy()
         days = []
-        for i in range(self.params.n1, len(candles)):
-            day = self.gen_new_run_day(candles[i - self.params.n1 : i + 1])
+        for i in range(self.params.n1 + self.params.n2, len(candles)):
+            day = self.gen_new_run_day(
+                candles[i - self.params.n1 - self.params.n2 : i + 1]
+            )
             if day:
                 days.append(day)
         return days
