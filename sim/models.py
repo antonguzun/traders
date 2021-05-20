@@ -19,7 +19,7 @@ class Deal:
         else:
             action = "sell"
         return (
-            f"deal: {action} {abs(self.paper_count)} paper(s) by {self.price}, "
+            f"{self.date.date()}: {action} {abs(self.paper_count)} paper(s) by {self.price}, "
             f" total_cost: {round(self.total_deal_cost, 2)}$"
         )
 
