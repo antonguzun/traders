@@ -6,7 +6,6 @@
 3. [Клиенты](#Клиенты)
 4. [Установка](#Установка)
 
-***
 ## Боты
 Они же генераторы сигналов к сделкам.
 
@@ -28,21 +27,19 @@ decision = generate_signal(newer_canlde)  # pass
 decision = generate_signal(newest_canlde)  # sell
 ...
 ```
-
 `decision` определяет видение тренда сигнального бота 
 
-***
-
 ## Утилиты
-### "Трейдеры"
-Классы для симуляции сделок на исторических данных по сигналам ботов
+#### Трейдеры - классы для симуляции сделок на исторических данных по сигналам ботов:
 * `sim.traders.Buffett` позволяет сгенерировать сделки пассивного инвестирования (используется как референс)
 * `sim.traders.OnePaperHistoryWideRangeTrader` генерит сделки по сигналам `WideRangeDayBot` 
 * `sim.traders.OnePaperHistoryRunDayBreakoutTrader` генерит сделки по сигналам `RunDayBreakoutBot`
-### Для симуляции сделок и расчета доходности стратегии бота:
+  
+
+#### Другие утилиты:
 * `sim.models.Deal` модель сделки, поддерживает `sum()` для суммирования стоимости списка сделок
 * `sim.models.DealsView` позволяет рассчитать доходность сделок
-* `sim.utils.printers.TradingPrinter` вычисляет разницу двух разных трейдеров по одному набору данных, выводит результат в консоль
+* `sim.utils.printers.TradingPrinter` вычисляет разницу двух разных трейдеров, получает данные с помощью клиента, выводит результат в консоль
 
 ### Пример использования трейдеров на основе `BaseTrader`
 ```python
@@ -57,7 +54,7 @@ print("active deals:", *active_deals, sep="\n")
 ```
 вызов объекта возвращает список сделок `List[Deal]`
 
-### Трейдер референс - `Baffett`
+### Трейдер референс `Baffett`
 ```python
 from sim import Baffet
 
@@ -76,9 +73,42 @@ from sim.models import DealsView
 # active_deals: List[Deal]
 active_deals_view = DealsView(active_deals, fist_candle)
 print(f"profit active {active_deals_view}")
-#>> profit active Total result: 6.86$, 41.65%, deals count: 2
+# >> profit active Total result: 6.86$, 41.65%, deals count: 2
 ```
-***
+
+### Пример использования готовых классов вывода
+```python
+from datetime import datetime
+
+from app.clients.tinkoff import TIClient
+from app.settings import TINKOFF_SANDBOX_TOKEN
+from bots.run_day_breakout_bot.models import RunDayBreakoutParams
+from sim.traders import OnePaperHistoryRunDayBreakoutTrader
+from sim.utils.printers import TradingPrinter
+
+
+client = TIClient(TINKOFF_SANDBOX_TOKEN, use_sandbox=True)
+trader = OnePaperHistoryRunDayBreakoutTrader(
+    RunDayBreakoutParams(3, 3), is_short_on=True
+)
+printer = TradingPrinter(client, trader)
+
+printer.print_history_trading(
+    ticker="AMD",
+    _from=datetime(year=2020, month=5, day=10),
+    _to=datetime(year=2021, month=5, day=10),
+)
+# >> TICKER AMD
+# >> date range: from 2020-05-11 to 2021-05-07
+# >> active deals:
+# >> 2020-05-28: sell 1 paper(s) by 51.74,  total_cost: 51.77$
+# >> ...
+# >> 2021-05-07: buy  1 paper(s) by 78.81,  total_cost: -78.85$
+# >> profit active 	Total result: 	-13.52$, 	-24.26%, 	deals count: 10
+# >> profit passive 	Total result: 	23.08$, 	41.41%, 	deals count: 2
+# >> profit effect -65.67%
+# >> ________________________
+```
 
 ## Клиенты
 Все модули проекта завязаны на сущность `app.common.models.candle.Candle`, для отвязки от типа данных конкретного источника.
@@ -88,7 +118,6 @@ print(f"profit active {active_deals_view}")
 Все клиенты должны поддерживать базовый интерфейс и выдавать данные в базовых моделях.
 * `app.clients.tinkoff.TIClient` класс клиента апи тинькова
 
-***
 ## Установка
 Устанавливаем python 3.8
 
