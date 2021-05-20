@@ -2,11 +2,11 @@ from decimal import Decimal
 from typing import List, Optional
 
 from app.common.models.candle import Candle
-from bots.wide_ranging_day_bot.models import PTR, StrategyParams
+from bots.wide_ranging_day_bot.models import PTR, WideRangeParams
 
 
 class WideRangeDayGetter:
-    def __init__(self, params: StrategyParams, candles: List[Candle]):
+    def __init__(self, params: WideRangeParams, candles: List[Candle]):
         self.params = params
         self.candles = candles
 
@@ -51,7 +51,7 @@ class WideRangeDayGetter:
 class PTRFinder:
     def __init__(
         self,
-        params: StrategyParams,
+        params: WideRangeParams,
         required_days_count: int,
         history_candles: List[Candle],
     ):

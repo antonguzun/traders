@@ -1,16 +1,16 @@
 from datetime import datetime
 
-from bots.wide_ranging_day_bot.models import StrategyParams
+from bots.wide_ranging_day_bot.models import WideRangeParams
 from sim import OnePaperHistoryWideRangeTrader
 
 
 def gen_params():
     for j in range(10, 25):
         for i in range(0, 7):
-            yield StrategyParams(i, j / 10)
+            yield WideRangeParams(i, j / 10)
 
 
-def find_params(candles) -> StrategyParams:
+def find_params(candles) -> WideRangeParams:
     profit = 0
     best_params = None
     for params in gen_params():
@@ -24,7 +24,7 @@ def find_params(candles) -> StrategyParams:
 
 def save_params(
     ticker: str,
-    params: StrategyParams,
+    params: WideRangeParams,
     profit_proc,
     profit_effect,
     from_dt: datetime,

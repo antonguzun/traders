@@ -5,7 +5,7 @@ from app.common.models.candle import Candle
 
 
 @dataclass
-class StrategyParams:
+class WideRangeParams:
     """
     n1 - кол-во дней перед днем с широким диапазоном, включенных в период PTR
     k - коэффициент волатильности - значение, которое должен превысить volatily ratio,

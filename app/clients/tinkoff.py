@@ -14,9 +14,8 @@ class TIClient(BaseClient, SyncClient):
         instrument_figi = (
             self.get_market_search_by_ticker(ticker).payload.instruments[0].figi
         )
-        res = CandleResolution.day
         tinkoff_candles = self.get_market_candles(
-            instrument_figi, _from, _to, res
+            instrument_figi, _from, _to, CandleResolution.day
         ).payload.candles
         return [
             Candle.create_by_tinkoff_candle(t_candle) for t_candle in tinkoff_candles
