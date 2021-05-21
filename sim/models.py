@@ -8,29 +8,38 @@ from sim.constants import COMMISSION_VALUE
 
 @dataclass
 class Deal:
+    """Класс сделки
+    положительное paper_count говорит о факте покупки, отрицательное - о продаже
+    price содержит цену одной бумаги без комиссии на момент сделки
+    """
     ticker: str
     price: Decimal
     paper_count: int
     date: datetime
 
     def __str__(self):
+        """если кол-во бумаг """
         if self.paper_count >= 0:
             action = "buy "
         else:
             action = "sell"
         return (
             f"{self.date.date()}: {action} {abs(self.paper_count)} paper(s) by {self.price}, "
-            f" total_cost: {round(self.total_deal_cost, 2)}$"
+            f" total_cost: {round(self.deal_result, 2)}$"
         )
 
     @property
-    def total_deal_cost(self) -> Decimal:
+    def deal_result(self) -> Decimal:
+        """множитель -1 вместе с числом бумаг к сделке (paper_count) формирует итоговую стоимость сделки,
+        т.к. price всегда положительный
+        -1 бумага * 1$ * 1 приводит к результату +1$, тк продается одна бумага"""
         return self.price * self.paper_count * -1 * (1 + COMMISSION_VALUE)
 
     def __radd__(self, other: Decimal) -> Decimal:
+        """поддерживаем функцию sum()"""
         if other:
-            return self.total_deal_cost + other
-        return self.total_deal_cost
+            return self.deal_result + other
+        return self.deal_result
 
 
 class DealsView:
