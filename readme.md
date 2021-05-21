@@ -11,9 +11,10 @@
 
 В папке `bots` каждый бот подчиняется базовому интерфейсу.
 
-* `bots.wide_ranging_day_bot.bot.WideRangeDayBot` бот основан на принципе широкодиапазонного дня. [Результаты](https://docs.google.com/spreadsheets/d/1-e9Jza_OrOK2vfOx9dtoKknFYvd9ENLH2cQnN9enzrM/edit?usp=sharing)
-("Технический анализ. Полный курс" - Швагер Джек Д., стр. 651)
+* `bots.wide_ranging_day_bot.bot.WideRangeDayBot` бот основан на принципе широкодиапазонного дня ("Технический анализ. Полный курс" - Швагер Джек Д., стр. 651)
 * `bots.run_day_breakout_bot.bot.RunDayBreakoutBot` бот основан на идее пробоя "дней с ускорением" ("Технический анализ. Полный курс" - Швагер Джек Д., стр. 661)
+
+[Сводные результаты](https://docs.google.com/spreadsheets/d/1wf5TFp-be7NA-CUFTeJP__qhKkk7ryCaWQHjIkndQ4g/edit?usp=sharing)
 
 ### Пример использования бота
 ```python
@@ -40,6 +41,7 @@ decision = generate_signal(newest_canlde)  # sell
 * `sim.models.Deal` модель сделки, поддерживает `sum()` для суммирования стоимости списка сделок
 * `sim.models.DealsView` позволяет рассчитать доходность сделок
 * `sim.utils.printers.TradingPrinter` вычисляет разницу двух разных трейдеров, получает данные с помощью клиента, выводит результат в консоль
+* `sim.utils.result_savers.SummaryTradeResultsCsvSaver` создает csv файл со сводными результатами ботов, использует классы трейдеров для генерации сделок
 
 ### Пример использования трейдеров на основе `BaseTrader`
 ```python

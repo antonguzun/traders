@@ -1,1 +1,5 @@
-from sim.traders import Baffett, OnePaperHistoryWideRangeTrader
+from sim.traders import (
+    Baffett,
+    OnePaperHistoryRunDayBreakoutTrader,
+    OnePaperHistoryWideRangeTrader,
+)
