@@ -12,9 +12,7 @@ if __name__ == "__main__":
     # trader = OnePaperHistoryRunDayBreakoutTrader(
     #     RunDayBreakoutParams(3, 3), is_short_on=True
     # )
-    trader = OnePaperHistoryWideRangeTrader(
-        WideRangeParams(1, 1.5), is_short_on=True
-    )
+    trader = OnePaperHistoryWideRangeTrader(WideRangeParams(1, 1.5), is_short_on=True)
 
     print_trade_results = TradingPrinter(client, trader)
 

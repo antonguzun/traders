@@ -27,8 +27,7 @@ class TradingPrinter:
         active_deals_view = DealsView(active_deals, candles[0].close)
         passive_deals_view = DealsView(passive_deals, candles[0].close)
         effect = round(
-            active_deals_view.percentage_result
-            - passive_deals_view.percentage_result,
+            active_deals_view.percentage_result - passive_deals_view.percentage_result,
             2,
         )
 
