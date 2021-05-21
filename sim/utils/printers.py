@@ -18,7 +18,7 @@ class TradingPrinter:
         self.trader = trader
         self.ref_trader = ref_trader
 
-    def print_history_trading(self, ticker: str, _from: datetime, _to: datetime):
+    def print_trade_results(self, ticker: str, _from: datetime, _to: datetime):
         candles = self.client.get_candles_by_ticker(ticker, _from, _to)
 
         active_deals = self.trader.create_deals(candles)
@@ -39,3 +39,6 @@ class TradingPrinter:
         print(f"profit passive {passive_deals_view}")
         print(f"profit effect {effect}%")
         print("________________________")
+
+    def __call__(self, ticker: str, _from: datetime, _to: datetime):
+        self.print_trade_results(ticker, _from, _to)

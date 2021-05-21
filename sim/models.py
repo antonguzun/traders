@@ -12,13 +12,13 @@ class Deal:
     положительное paper_count говорит о факте покупки, отрицательное - о продаже
     price содержит цену одной бумаги без комиссии на момент сделки
     """
+
     ticker: str
     price: Decimal
     paper_count: int
     date: datetime
 
     def __str__(self):
-        """если кол-во бумаг """
         if self.paper_count >= 0:
             action = "buy "
         else:

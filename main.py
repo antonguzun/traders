@@ -11,10 +11,10 @@ if __name__ == "__main__":
     trader = OnePaperHistoryRunDayBreakoutTrader(
         RunDayBreakoutParams(3, 3), is_short_on=True
     )
-    printer = TradingPrinter(client, trader)
+    print_trade_results = TradingPrinter(client, trader)
 
-    printer.print_history_trading(
-        ticker="SPCE",
+    print_trade_results(
+        ticker="AMD",
         _from=datetime(year=2020, month=5, day=10),
         _to=datetime(year=2021, month=5, day=10),
     )
