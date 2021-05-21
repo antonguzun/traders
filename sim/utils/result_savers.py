@@ -66,14 +66,14 @@ class SummaryTradeResultsCsvSaver:
     def result_by_trader(trader_resources, candles) -> str:
         if trader_resources.find_params:
             best_params = trader_resources.find_params(candles.copy())
-            trader = trader_resources.trader_class(best_params)
+            trader = trader_resources.trader_class(best_params, is_short_on=True)
         else:
             trader = trader_resources.trader_class()
         deals = trader.create_deals(candles.copy())
         if not deals:
             return "N/A"
         deals_view = DealsView(deals, candles[0].close)
-        return str(deals_view.total_result_in_proc)
+        return str(deals_view.percentage_result)
 
     def save_trade_results(self, tickers: List[str], _from: datetime, _to: datetime):
         names = [trader_resources.name for trader_resources in self.traders_resources]

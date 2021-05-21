@@ -51,7 +51,7 @@ class DealsView:
         if self.deals:
             return (
                 f"\tTotal result: \t{self.total_result}$, "
-                f"\t{self.total_result_in_proc}%, "
+                f"\t{self.percentage_result}%, "
                 f"\tdeals count: {len(self.deals)}"
             )
         return "No deals"
@@ -61,7 +61,7 @@ class DealsView:
         return round(sum(self.deals), 2)
 
     @property
-    def total_result_in_proc(self) -> Decimal:
+    def percentage_result(self) -> Decimal:
         if self.deals:
             return round(self.total_result / self.first_deal_cost * 100, 2)
         else:
