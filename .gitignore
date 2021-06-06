@@ -3,3 +3,6 @@
 /venv/
 .idea/
 *.pyc
+./.ipynb_checkpoints
+*/.ipynb_checkpoints/*
+/research/.ipynb_checkpoints/

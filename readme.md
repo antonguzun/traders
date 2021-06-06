@@ -135,3 +135,14 @@ https://tinkoffcreditsystems.github.io/invest-openapi/auth/
 ### Запускаем дефолтный прогон тикетов:
 
 ```python main.py```
+
+
+### Ресерч
+
+Установка зависимостей:
+
+```pip intstall -r requirements_additional.txt```
+
+запуск юпитера:
+
+```jupiter lab```
