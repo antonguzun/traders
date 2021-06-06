@@ -5,6 +5,7 @@
 2. [Утилиты](#Утилиты)
 3. [Клиенты](#Клиенты)
 4. [Установка](#Установка)
+5. [Ресерч](#Ресерч)
 
 ## Боты
 Они же генераторы сигналов к сделкам.
@@ -138,6 +139,7 @@ https://tinkoffcreditsystems.github.io/invest-openapi/auth/
 
 
 ### Ресерч
+* Оптимизация и подбор параметров для стратегии `WideRangeDayBot` https://github.com/antonguzun/traders/blob/master/research/optimize_wide_range.ipynb
 
 Установка зависимостей:
 
